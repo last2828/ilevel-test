@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Category;
 use App\Http\Controllers\Controller;
+use App\Product;
 use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,18 +18,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-      //get list of all categories and response
-      $categories = Category::all();
-
-      if(!$categories){
-        return response()->json([
-          'error' => 'bad request'
-        ], 400);
-      }
-
-      return response()->json([
-        'categories' => $categories
-      ], 200);
+        //
     }
 
     /**
@@ -42,7 +31,12 @@ class CategoryController extends Controller
     {
       //data validation from request
       $data = $request->all();
-      $rules = ['title' => 'required|unique:categories'];
+      $rules = [
+        'title' => 'required|max:255',
+        'model' => 'required|unique:products',
+        'description' => 'max:255',
+        'categories' => 'required|array'
+      ];
 
       $validator = Validator::make($data, $rules);
 
@@ -54,12 +48,21 @@ class CategoryController extends Controller
         ], 400);
       }
 
-      //creating a new category and response
-      $newCategory = Category::create($data);
+      //creating a new product
+      $newProduct = Product::create($data);
+
+      //creating product relationships with categories and response
+      foreach($data['categories'] as $category)
+      {
+        ProductCategory::create([
+          'product_id' => $newProduct->id,
+          'category_id' => $category
+        ]);
+      }
 
       return response()->json([
-        'message' => 'category was created',
-        'newCategory' => $newCategory
+        'message' => 'product was created',
+        'newProduct' => Product::with('category')->find($newProduct->id)
       ], 200);
     }
 
@@ -71,13 +74,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-      $category = Category::find($id);
-      $products = ProductCategory::with('product')->where('category_id', $id)->get();
-
-      return response()->json([
-        'category' => $category,
-        'products' => $products
-      ], 200);
+      //
     }
 
     /**
@@ -91,7 +88,15 @@ class CategoryController extends Controller
     {
       //data validation from request
       $data = $request->all();
-      $rules = ['title' => ['required', Rule::unique('categories')->ignore($id)]];
+      $rules = [
+        'title' => 'required|max:255',
+        'model' => [
+          'required',
+          Rule::unique('products')->ignore($id)
+        ],
+        'description' => 'max:255',
+        'category_id' => 'required|integer'
+      ];
 
       $validator = Validator::make($data, $rules);
 
@@ -103,12 +108,12 @@ class CategoryController extends Controller
         ], 400);
       }
 
-      //updating category and response
-      Category::find($id)->update($data);
+      //product update and response
+      Product::find($id)->update($data);
 
       return response()->json([
-        'message' => 'category was updated',
-        'category' => Category::find($id)
+        'message' => 'product was updated',
+        'product' => Product::find($id)
       ], 200);
     }
 
@@ -120,14 +125,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //deleting a category
-        Category::destroy($id);
+      //deleting a product
+      Product::destroy($id);
 
-        //remove category relationships with products and response
-        ProductCategory::where('category_id', $id)->delete();
+      //remove product relationships with categories and response
+      ProductCategory::where('product_id', $id)->delete();
 
-        return response()->json([
-          'message' => 'deletion successful'
-        ], 200);
+      return response()->json([
+        'message' => 'deletion successful'
+      ], 200);
     }
 }

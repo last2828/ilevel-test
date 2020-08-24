@@ -3,32 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Nyholm\Psr7\Request;
 
 class Product extends Model
 {
 
   protected $fillable = [
-    'title',
-    'description',
-    'model',
-    'category_id'
+    'title', 'description', 'model'
     ];
 
-  public function category()
-  {
-    return $this->belongsToMany(
-      Category::class,
-      'product_categories',
-      'product_id',
-      'category_id'
-    );
-  }
-
-  public function productCategory()
+  public function categories()
   {
     return $this->hasMany(
-      ProductCategory::class
-      );
+      ProductCategory::class,
+    );
   }
 
 }

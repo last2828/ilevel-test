@@ -14,11 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'API'], function(){
+  Route::resource('categories', 'CategoryController')->only('index', 'show');
+  Route::resource('categories', 'CategoryController')->except('index', 'show')->middleware('auth:api');
+
+  Route::resource('products', 'ProductController')->only('index');
+  Route::resource('products', 'ProductController')->except('index')->middleware('auth:api');
 });
 
-//Route::group(['prefix' => 'API'], function(){
-  Route::resource('categories', 'API\CategoryController')->only('index');
-//  Route::resource('categories', 'CategoryController')->except('index')->middleware('auth:api');
-//});
+Route::group(['prefix' => 'users', 'namespace' => 'API\Auth'], function(){
+  Route::post('/register', 'RegisterController@register');
+  Route::post('/login', 'LoginController@login');
+  Route::post('/logout', 'LogoutController@logout')->middleware('auth:api');
+});
