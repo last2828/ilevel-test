@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Nyholm\Psr7\Request;
 
 class Product extends Model
 {
