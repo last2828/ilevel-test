@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Route::group(['prefix' => 'API'], function(){
+  Route::resource('categories', 'API\CategoryController')->only('index');
+//  Route::resource('categories', 'CategoryController')->except('index')->middleware('auth:api');
+//});
