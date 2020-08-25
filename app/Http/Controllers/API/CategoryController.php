@@ -119,10 +119,10 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //deleting a category
-        Category::destroy($id);
+        $category = Category::find($id);
+        $category->product()->detach();
+        $category->delete();
 
-        //remove category relationships with products and response
-//        ProductCategory::where('category_id', $id)->delete();
 
         return response()->json([
           'message' => 'deletion successful'

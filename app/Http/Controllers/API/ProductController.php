@@ -86,8 +86,7 @@ class ProductController extends Controller
           'required',
           Rule::unique('products')->ignore($id)
         ],
-        'description' => 'max:255',
-        'category_id' => 'required|integer'
+        'description' => 'max:255'
       ];
 
       $validator = Validator::make($data, $rules);
@@ -101,11 +100,13 @@ class ProductController extends Controller
       }
 
       //product update and response
-      Product::find($id)->update($data);
+      $product = Product::find($id);
+      $product->update($data);
+      $product->categories()->sync($data['categories']);
 
       return response()->json([
         'message' => 'product was updated',
-        'product' => Product::find($id)
+        'product' => Product::with('categories')->find($id)
       ], 200);
     }
 
@@ -118,10 +119,9 @@ class ProductController extends Controller
     public function destroy($id)
     {
       //deleting a product
-      Product::destroy($id);
-
-      //remove product relationships with categories and response
-      ProductCategory::where('product_id', $id)->delete();
+      $product = Product::find($id);
+      $product->categories()->detach();
+      $product->delete();
 
       return response()->json([
         'message' => 'deletion successful'
