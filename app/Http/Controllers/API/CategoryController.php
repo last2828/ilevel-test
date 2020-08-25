@@ -71,12 +71,10 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-      $category = Category::find($id);
-      $products = ProductCategory::with('product')->where('category_id', $id)->get();
+      $categoryWithProducts = Category::with('products')->find($id);
 
       return response()->json([
-        'category' => $category,
-        'products' => $products
+        'categoryWithProducts' => $categoryWithProducts,
       ], 200);
     }
 
@@ -124,7 +122,7 @@ class CategoryController extends Controller
         Category::destroy($id);
 
         //remove category relationships with products and response
-        ProductCategory::where('category_id', $id)->delete();
+//        ProductCategory::where('category_id', $id)->delete();
 
         return response()->json([
           'message' => 'deletion successful'

@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'API'], function(){
   Route::resource('categories', 'CategoryController')->only('index', 'show');
-  Route::resource('categories', 'CategoryController')->except('index', 'show')->middleware('auth:api');
+  Route::resource('categories', 'CategoryController')->except('index', 'show');
 
   Route::resource('products', 'ProductController')->only('index');
-  Route::resource('products', 'ProductController')->except('index')->middleware('auth:api');
+  Route::resource('products', 'ProductController')->except('index');
 });
 
 Route::group(['prefix' => 'users', 'namespace' => 'API\Auth'], function(){

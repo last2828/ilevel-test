@@ -48,21 +48,13 @@ class ProductController extends Controller
         ], 400);
       }
 
-      //creating a new product
+      //creating a new product with relationships
       $newProduct = Product::create($data);
-
-      //creating product relationships with categories and response
-      foreach($data['categories'] as $category)
-      {
-        ProductCategory::create([
-          'product_id' => $newProduct->id,
-          'category_id' => $category
-        ]);
-      }
+      $newProduct->categories()->sync($data['categories']);
 
       return response()->json([
         'message' => 'product was created',
-        'newProduct' => Product::with('category')->find($newProduct->id)
+        'newProduct' => Product::with('categories')->find($newProduct->id)
       ], 200);
     }
 
