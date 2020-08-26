@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Category;
 use App\Http\Controllers\Controller;
-use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -16,6 +15,27 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /**
+   * @OA\Get(
+   *     path="/api/categories",
+   *     summary="Get all categories",
+   *     tags={"Categories"},
+   *     description="Get all categories",
+   *
+   *     @OA\Response(
+   *         response=200,
+   *         description="Successful operation",
+   *        @OA\JsonContent(ref="#/components/schemas/CategoryResource")
+   *     ),
+   *
+   *   @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      ),
+   *
+   * )
+   */
     public function index()
     {
       //get list of all categories and response
@@ -28,6 +48,7 @@ class CategoryController extends Controller
       }
 
       return response()->json([
+        'message' => 'Successful operation',
         'categories' => $categories
       ], 200);
     }
@@ -38,6 +59,47 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+  /**
+   * @OA\POST(
+   *     path="/api/categories",
+   *     summary="Create a new category",
+   *     tags={"Categories"},
+   *     description="Create a new category",
+   *      @OA\Parameter(
+   *         name="token",
+   *         required=true,
+   *         in="header",
+   *         description="Bearer lbsiiejroiehfuwoefnelfiower2432420agfasdfsadfasdgrewgwergwergwergewrg",
+   *          @OA\Schema(
+   *         type="string"
+   *          )
+   *      ),
+   *      @OA\RequestBody(
+   *          required=true,
+   *          @OA\JsonContent(ref="#/components/schemas/StoreCategoryRequest")
+   *      ),
+   *
+   *     @OA\Response(
+   *          response=201,
+   *          description="Successful operation",
+   *          @OA\JsonContent(ref="#/components/schemas/Category")
+   *       ),
+   *      @OA\Response(
+   *          response=400,
+   *          description="Bad Request"
+   *      ),
+   *      @OA\Response(
+   *          response=401,
+   *          description="Unauthenticated",
+   *      ),
+   *      @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      )
+   *
+   * )
+   */
     public function store(Request $request)
     {
       //data validation from request
@@ -58,9 +120,9 @@ class CategoryController extends Controller
       $newCategory = Category::create($data);
 
       return response()->json([
-        'message' => 'category was created',
+        'message' => 'Successful operation',
         'newCategory' => $newCategory
-      ], 200);
+      ], 201);
     }
 
     /**
@@ -69,11 +131,41 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    /**
+   * @OA\Get(
+   *     path="/api/categories/{category_id}",
+   *     summary="Get category by id",
+   *     tags={"Categories"},
+   *     description="Get category by id with all products",
+   *     @OA\Parameter(
+   *         name="category_id",
+   *         required=true,
+   *         in="path",
+   *         description="1",
+   *          @OA\Schema(
+   *         type="integer"
+   *          )
+   *      ),
+   *
+   *      @OA\Response(
+   *          response=200,
+   *          description="Successful operation",
+   *          @OA\JsonContent(ref="#/components/schemas/Category")
+   *       ),
+   *      @OA\Response(
+   *          response=400,
+   *          description="Bad Request"
+   *      ),
+   *
+   * )
+   */
     public function show($id)
     {
       $categoryWithProducts = Category::with('products')->find($id);
 
       return response()->json([
+        'message' => 'Successful operation',
         'categoryWithProducts' => $categoryWithProducts,
       ], 200);
     }
@@ -84,6 +176,60 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * @OA\PUT(
+     *     path="/api/categories/{category_id}",
+     *     summary="Update category by id",
+     *     tags={"Categories"},
+     *     description="Update category by id with all relations",
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         required=true,
+     *         in="path",
+     *         description="1",
+     *          @OA\Schema(
+     *         type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *         name="token",
+     *         required=true,
+     *         in="header",
+     *         description="Bearer lbsiiejroiehfuwoefnelfiower2432420agfasdfsadfasdgrewgwergwergwergewrg",
+     *          @OA\Schema(
+     *         type="string"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/UpdateCategoryRequest")
+     *      ),
+     *
+     *     @OA\Response(
+     *          response=202,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Category")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      ),
+     *
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -105,9 +251,9 @@ class CategoryController extends Controller
       Category::find($id)->update($data);
 
       return response()->json([
-        'message' => 'category was updated',
+        'message' => 'Successful operation',
         'category' => Category::find($id)
-      ], 200);
+      ], 202);
     }
 
     /**
@@ -116,6 +262,51 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+  /**
+   * @OA\DELETE(
+   *     path="/api/categories/{category_id}",
+   *     summary="Delete category by id",
+   *     tags={"Categories"},
+   *     description="Delete category by id with all relations",
+   *     @OA\Parameter(
+   *         name="category_id",
+   *         required=true,
+   *         in="path",
+   *         description="1",
+   *          @OA\Schema(
+   *         type="integer"
+   *          )
+   *      ),
+   *      @OA\Parameter(
+   *         name="token",
+   *         required=true,
+   *         in="header",
+   *         description="Bearer lbsiiejroiehfuwoefnelfiower2432420agfasdfsadfasdgrewgwergwergwergewrg",
+   *          @OA\Schema(
+   *         type="string"
+   *          )
+   *      ),
+   *
+   *     @OA\Response(
+   *          response=204,
+   *          description="Successful operation"
+   *       ),
+   *      @OA\Response(
+   *          response=401,
+   *          description="Unauthenticated",
+   *      ),
+   *      @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      ),
+   *      @OA\Response(
+   *          response=404,
+   *          description="Resource Not Found"
+   *      )
+   *
+   * )
+   */
     public function destroy($id)
     {
         //deleting a category
@@ -125,7 +316,7 @@ class CategoryController extends Controller
 
 
         return response()->json([
-          'message' => 'deletion successful'
-        ], 200);
+          'message' => 'Successful operation'
+        ], 204);
     }
 }

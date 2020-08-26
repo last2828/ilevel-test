@@ -15,6 +15,33 @@ class RegisterController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
+
+  /**
+   * @OA\POST(
+   *     path="/api/users/register",
+   *     summary="Register a new user",
+   *     tags={"Users"},
+   *     description="Register a new user",
+   *      @OA\RequestBody(
+   *          required=true,
+   *          @OA\JsonContent(ref="#/components/schemas/RegisterUserRequest")
+   *      ),
+   *
+   *     @OA\Response(
+   *          response=201,
+   *          description="Successful operation"
+   *       ),
+   *      @OA\Response(
+   *          response=400,
+   *          description="Bad Request"
+   *      ),
+   *      @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      )
+   *
+   * )
+   */
   public function register(Request $request)
   {
     $data = $request->all();

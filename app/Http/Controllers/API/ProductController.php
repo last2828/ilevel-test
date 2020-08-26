@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Product;
-use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+
+
 
 class ProductController extends Controller
 {
@@ -16,6 +17,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         //
@@ -27,6 +29,47 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+  /**
+   * @OA\POST(
+   *     path="/api/products",
+   *     summary="Create a new product",
+   *     tags={"Products"},
+   *     description="Create a new product",
+   *      @OA\RequestBody(
+   *          required=true,
+   *          @OA\JsonContent(ref="#/components/schemas/StoreProductRequest")
+   *      ),
+     *   @OA\Parameter(
+     *         name="token",
+     *         required=true,
+     *         in="header",
+     *         description="Bearer lbsiiejroiehfuwoefnelfiower2432420agfasdfsadfasdgrewgwergwergwergewrg",
+     *          @OA\Schema(
+     *         type="string"
+     *          )
+     *      ),
+   *
+   *     @OA\Response(
+   *          response=201,
+   *          description="Successful operation",
+   *          @OA\JsonContent(ref="#/components/schemas/Product")
+   *       ),
+   *      @OA\Response(
+   *          response=400,
+   *          description="Bad Request"
+   *      ),
+   *      @OA\Response(
+   *          response=401,
+   *          description="Unauthenticated",
+   *      ),
+   *      @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      )
+   *
+   * )
+   */
     public function store(Request $request)
     {
       //data validation from request
@@ -64,6 +107,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function show($id)
     {
       //
@@ -76,6 +120,60 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+  /**
+   * @OA\PUT(
+   *     path="/api/products/{product_id}",
+   *     summary="Update product by id",
+   *     tags={"Products"},
+   *     description="Update category by id with all relations",
+   *     @OA\Parameter(
+   *         name="product_id",
+   *         required=true,
+   *         in="path",
+   *         description="1",
+   *          @OA\Schema(
+   *         type="integer"
+   *          )
+   *      ),
+     *   @OA\Parameter(
+     *         name="token",
+     *         required=true,
+     *         in="header",
+     *         description="Bearer lbsiiejroiehfuwoefnelfiower2432420agfasdfsadfasdgrewgwergwergwergewrg",
+     *          @OA\Schema(
+     *         type="string"
+     *          )
+     *      ),
+   *      @OA\RequestBody(
+   *          required=true,
+   *          @OA\JsonContent(ref="#/components/schemas/UpdateProductRequest")
+   *      ),
+   *
+   *     @OA\Response(
+   *          response=202,
+   *          description="Successful operation",
+   *          @OA\JsonContent(ref="#/components/schemas/Product")
+   *       ),
+   *      @OA\Response(
+   *          response=400,
+   *          description="Bad Request"
+   *      ),
+   *      @OA\Response(
+   *          response=401,
+   *          description="Unauthenticated",
+   *      ),
+   *      @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      ),
+   *      @OA\Response(
+   *          response=404,
+   *          description="Resource Not Found"
+   *      ),
+   *
+   * )
+   */
     public function update(Request $request, $id)
     {
       //data validation from request
@@ -116,6 +214,50 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+  /**
+   * @OA\DELETE(
+   *     path="/api/products/{product_id}",
+   *     summary="Delete product by id",
+   *     tags={"Products"},
+   *     description="Delete product by id with all relations",
+   *     @OA\Parameter(
+   *         name="product_id",
+   *         required=true,
+   *         in="path",
+   *         description="1",
+   *          @OA\Schema(
+   *         type="integer"
+   *          )
+   *      ),
+   *      @OA\Parameter(
+   *         name="token",
+   *         required=true,
+   *         in="header",
+   *         description="Bearer lbsiiejroiehfuwoefnelfiower2432420agfasdfsadfasdgrewgwergwergwergewrg",
+   *          @OA\Schema(
+   *         type="string"
+   *          )
+   *      ),
+   *     @OA\Response(
+   *          response=204,
+   *          description="Successful operation"
+   *       ),
+   *      @OA\Response(
+   *          response=401,
+   *          description="Unauthenticated",
+   *      ),
+   *      @OA\Response(
+   *          response=403,
+   *          description="Forbidden"
+   *      ),
+   *      @OA\Response(
+   *          response=404,
+   *          description="Resource Not Found"
+   *      )
+   *
+   * )
+   */
     public function destroy($id)
     {
       //deleting a product
