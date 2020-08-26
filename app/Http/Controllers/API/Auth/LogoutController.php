@@ -39,10 +39,6 @@ class LogoutController extends Controller
    *          description="Unauthenticated",
    *      ),
    *      @OA\Response(
-   *          response=400,
-   *          description="Bad Request"
-   *      ),
-   *      @OA\Response(
    *          response=403,
    *          description="Forbidden"
    *      )
