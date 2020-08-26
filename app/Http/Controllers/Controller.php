@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 /**
  * @OA\Swagger(
  *   schemes={"http"},
- *   host="ilevel.test:8888",
+ *   host="https://ilevel.herokuapp.com/",
  *   basePath="/",
  *   @OA\Info(
  *     title="Ilevel API",
