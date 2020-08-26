@@ -15,7 +15,7 @@ class LogoutController extends Controller
    */
 
   /**
-   * @OA\POST(
+   * @OA\Post(
    *     path="/api/users/logout",
    *     summary="Logout user",
    *     tags={"Users"},
@@ -37,6 +37,10 @@ class LogoutController extends Controller
    *      @OA\Response(
    *          response=401,
    *          description="Unauthenticated",
+   *      ),
+   *      @OA\Response(
+   *          response=400,
+   *          description="Bad Request"
    *      ),
    *      @OA\Response(
    *          response=403,

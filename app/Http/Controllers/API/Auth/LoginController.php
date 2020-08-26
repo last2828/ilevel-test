@@ -16,7 +16,7 @@ class LoginController extends Controller
    */
 
   /**
-   * @OA\POST(
+   * @OA\Post(
    *     path="/api/users/login",
    *     summary="Login user",
    *     tags={"Users"},

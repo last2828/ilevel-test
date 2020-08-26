@@ -31,7 +31,7 @@ class ProductController extends Controller
      */
 
   /**
-   * @OA\POST(
+   * @OA\Post(
    *     path="/api/products",
    *     summary="Create a new product",
    *     tags={"Products"},
@@ -122,7 +122,7 @@ class ProductController extends Controller
      */
 
   /**
-   * @OA\PUT(
+   * @OA\Put(
    *     path="/api/products/{product_id}",
    *     summary="Update product by id",
    *     tags={"Products"},
@@ -216,7 +216,7 @@ class ProductController extends Controller
      */
 
   /**
-   * @OA\DELETE(
+   * @OA\Delete(
    *     path="/api/products/{product_id}",
    *     summary="Delete product by id",
    *     tags={"Products"},

@@ -61,7 +61,7 @@ class CategoryController extends Controller
      */
 
   /**
-   * @OA\POST(
+   * @OA\Post(
    *     path="/api/categories",
    *     summary="Create a new category",
    *     tags={"Categories"},
@@ -179,7 +179,7 @@ class CategoryController extends Controller
      */
 
     /**
-     * @OA\PUT(
+     * @OA\Put(
      *     path="/api/categories/{category_id}",
      *     summary="Update category by id",
      *     tags={"Categories"},
@@ -264,7 +264,7 @@ class CategoryController extends Controller
      */
 
   /**
-   * @OA\DELETE(
+   * @OA\Delete(
    *     path="/api/categories/{category_id}",
    *     summary="Delete category by id",
    *     tags={"Categories"},
